@@ -3,7 +3,7 @@
 Plugin Name: WP Downgrade | Specific Core Version
 Plugin URI: https://www.reisetiger.net
 Description: WP Downgrade allows you to either downgrade or update WordPress Core to an arbitrary version of your choice. The version you choose is downloaded directly from wordpress.org and installed just like any regular release update. The target version WordPress allows you to update to remains constant until you enter a different one or deactivate the plugin either completely or by leaving the target version field empty.
-Version: 1.2.6
+Version: 1.2.7
 Author: Reisetiger
 Author URI: https://www.reisetiger.net
 License: GPL2
@@ -131,7 +131,7 @@ else
         <tr valign="top">
         <td><input type="checkbox" id="myCheck" onclick="wpdgshowhide()" name="wpdg_edit_download_url"  <?php if (get_option('wpdg_edit_download_url')){ echo 'checked';} ?>> <?php esc_html_e('edit download URL', 'wp-downgrade'); ?> </td>
         <td> <span id="download-url" style="display:<?php if (get_option('wpdg_edit_download_url')){ echo 'inline';} else {echo 'none';} ?>"><input type="url" pattern="https?://.+" name="wpdg_download_url" id="download-url" value="<?php echo esc_attr( $wpdg_download_url ); ?>" /> </span></td>
-        <td> <span id="download-url-text" style="display:<?php if (get_option('wpdg_edit_download_url')){ echo 'inline';} else {echo 'none';} ?>"><?php wp_kses(_e('Usually you <strong>do not</strong> need to change this. But you can, if necessary. Must be a valid URL to a WordPress ZIP. <strong>Be careful!</strong> The content will not be verified! Wordpress will use what ever you give here, even if it does not contain release ', 'wp-downgrade'), $allowed_tags); echo esc_html(get_option('wpdg_specific_version_name')).' or for example a wrong language. After your special update is done, you need to check for success yourself. And after that, you should turn off this option.'; ?></span></td>
+        <td> <span id="download-url-text" style="display:<?php if (get_option('wpdg_edit_download_url')){ echo 'inline';} else {echo 'none';} ?>"><?php echo wp_kses(__('Usually you <strong>do not</strong> need to change this. But you can, if necessary. Must be a valid URL to a WordPress ZIP. <strong>Be careful!</strong> The content will not be verified! Wordpress will use what ever you give here, even if it does not contain release ', 'wp-downgrade'), $allowed_tags); echo esc_html(get_option('wpdg_specific_version_name')).' or for example a wrong language. After your special update is done, you need to check for success yourself. And after that, you should turn off this option.'; ?></span></td>
         </tr>
     <?php } ?>
 
@@ -146,7 +146,7 @@ else
 <?php if (get_option('wpdg_specific_version_name')) { 
 if (version_compare($wp_version, get_option('wpdg_specific_version_name') ) == 0 ) { ?>
   <div style="border: 2px solid green; padding: 5px;">
-  <?php wp_kses(_e('<strong>All fine!</strong> You are currently on your desired release. And it will stay like that. <br>If you ever want to <strong>reinstall</strong> ', 'wp-downgrade'), $allowed_tags); ?> <?php echo esc_html(get_option('wpdg_specific_version_name')).', you have to switch to another version and come back. If you want to return to the regular update channel, you need to empty the version number above and go to '; ?> <a href="<?php echo esc_url(get_admin_url( null, '/update-core.php' )) ;?>"><?php esc_html_e('Update Core', 'wp-downgrade'); ?></a>.
+  <?php echo wp_kses(__('<strong>All fine!</strong> You are currently on your desired release. And it will stay like that. <br>If you ever want to <strong>reinstall</strong> ', 'wp-downgrade'), $allowed_tags); ?> <?php echo esc_html(get_option('wpdg_specific_version_name')).', you have to switch to another version and come back. If you want to return to the regular update channel, you need to empty the version number above and go to '; ?> <a href="<?php echo esc_url(get_admin_url( null, '/update-core.php' )) ;?>"><?php esc_html_e('Update Core', 'wp-downgrade'); ?></a>.
   </div>
 <?php } else { ?>
 <div style="border: 2px solid orange; padding: 5px;">
@@ -182,21 +182,23 @@ if ($sprache == 'en_US/' OR $sprache == 'en' OR $sprache == 'en/'){
   $sprache = '';
   };
 $dg_version = get_option('wpdg_specific_version_name');
-if ($dg_version < 1)
+if ($dg_version == '')
   return $updates;
     
     global $wp_version;
     // If current version is target version then stop
     
     if ( version_compare( $wp_version, $dg_version ) == 0 ) {
-        return;
+        return $updates;
     } //https://downloads.wordpress.org/release/de_DE/wordpress-4.5.zip
     
-    if($updates){
+    if($updates AND isset($updates->updates[0])){
       $updates->updates[0]->download = wpdg_get_url($dg_version);
-      $updates->updates[0]->packages->full = wpdg_get_url($dg_version);
-      $updates->updates[0]->packages->no_content = '';
-      $updates->updates[0]->packages->new_bundled = '';
+      if(isset($updates->updates[0]->packages)){
+        $updates->updates[0]->packages->full = wpdg_get_url($dg_version);
+        $updates->updates[0]->packages->no_content = '';
+        $updates->updates[0]->packages->new_bundled = '';
+      }
       $updates->updates[0]->current = $dg_version;
     }
     

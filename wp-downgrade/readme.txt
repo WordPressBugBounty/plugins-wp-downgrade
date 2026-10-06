@@ -3,8 +3,8 @@ Contributors: Reisetiger
 Donate link: https://www.reisetiger.net/spenden-wp-plugins/
 Tags: Downgrade, Core, WP-Core, Version, Rollback, Upgrade, Update, Release, Versionskontrolle
 Requires at least: 3.0.1
-Tested up to: 6.2
-Stable tag: 1.2.6
+Tested up to: 7.1.2
+Stable tag: 1.2.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -73,6 +73,11 @@ A: If there is no button for update/reinstall core on /wp-admin/update-core.php,
 
 
 == Changelog ==
+= 1.2.7 =
+* Fixed PHP error of type E_ERROR on PHP 8.2
+* testet up to WordPress 7.1.2
+* compatibility with PHP 8.2
+
 = 1.2.6 =
 * Fixed PHP Fatal error: Uncaught Error: Attempt to modify property "updates"
 * testet up to WordPress 6.2
@@ -127,3 +132,9 @@ A: If there is no button for update/reinstall core on /wp-admin/update-core.php,
 * Funktioniert für Deutsche Sprachversion
 
 == Upgrade Notice ==
+
+== Project inquiries ==
+
+Interested in maintaining or developing this plugin? I am open to discussing the future development and stewardship of this plugin with experienced WordPress developers or established plugin companies. Feel free to contact me at **info@reisetiger.net**.
+
+The plugin continues to be maintained and available as usual.
