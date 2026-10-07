@@ -3,7 +3,7 @@
 Plugin Name: WP Downgrade | Specific Core Version
 Plugin URI: https://www.reisetiger.net
 Description: WP Downgrade allows you to either downgrade or update WordPress Core to an arbitrary version of your choice. The version you choose is downloaded directly from wordpress.org and installed just like any regular release update. The target version WordPress allows you to update to remains constant until you enter a different one or deactivate the plugin either completely or by leaving the target version field empty.
-Version: 1.2.7
+Version: 1.2.9
 Author: Reisetiger
 Author URI: https://www.reisetiger.net
 License: GPL2
@@ -189,7 +189,7 @@ if ($dg_version == '')
     // If current version is target version then stop
     
     if ( version_compare( $wp_version, $dg_version ) == 0 ) {
-        return $updates;
+        return;
     } //https://downloads.wordpress.org/release/de_DE/wordpress-4.5.zip
     
     if($updates AND isset($updates->updates[0])){
